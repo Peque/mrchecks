@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+all=$(git log --pretty=%s $(git merge-base --octopus origin/master)..)
+fixups=$(echo "$all" | grep -e "^fixup!")
+if [ -z "$fixups" ]; then
+  exit 0
+fi
+echo "$fixups"
+exit 1
