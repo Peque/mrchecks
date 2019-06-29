@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+git fetch origin master
 all=$(git log --pretty=%s $(git merge-base --octopus origin/master)..)
 if [ "$?" -ne 0 ]; then
   exit 1
