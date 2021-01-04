@@ -4,11 +4,12 @@ all=$(git log --pretty=%s $(git merge-base --octopus origin/master)..)
 if [ "$?" -ne 0 ]; then
   exit 1
 fi
-fixups=$(echo "$all" | grep -e "^fixup!")
-if [ -z "$fixups" ]; then
-  exit 0
-fi
 RED='\033[0;31m'
 NC='\033[0m' # No Color
-echo -e "${RED}$fixups${NC}"
-exit 1
+longer=$(echo "$all" | grep -e ".\{51,\}")
+if [ "$longer" ]; then
+  echo "Commits with a subject longer than 50 characters:"
+  echo -e "${RED}$longer${NC}"
+  exit 1
+fi
+exit 0
