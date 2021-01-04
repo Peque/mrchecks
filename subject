@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+git fetch --quiet upstream master
+all=$(git log --pretty=%s $(git merge-base --octopus upstream/master)..)
+if [ "$?" -ne 0 ]; then
+  exit 1
+fi
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+caps=$(echo "$all" | grep -e "^[^A-Z]")
+if [ "$caps" ]; then
+  echo "Commits with an incorrect subject's first character:"
+  echo -e "${RED}$caps${NC}"
+  exit 1
+fi
+long=$(echo "$all" | grep -e ".\{51,\}")
+if [ "$long" ]; then
+  echo "Commits with a subject longer than 50 characters:"
+  echo -e "${RED}$long${NC}"
+  exit 1
+fi
+exit 0
