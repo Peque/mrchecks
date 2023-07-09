@@ -45,12 +45,12 @@ def check_subject_length(subject):
 if __name__ == "__main__":
     parser = ArgumentParser(description="Run MR checks")
     parser.add_argument("--xlength", action="store_true", help="Exclude subject lenght check")
-    parser.add_argument("--main", action="store_true", help="Use main branch")
+    parser.add_argument("--master", action="store_true", help="Use master branch")
     arguments = parser.parse_args()
 
-    target_name = "master"
-    if arguments.main:
-        target_name = "main"
+    target_name = "main"
+    if arguments.master:
+        target_name = "master"
     output_text("git fetch --quiet origin {}".format(target_name))
     ancestor = output_text("git merge-base --octopus origin/{}".format(target_name))[0]
     subjects = output_text("git log --pretty=%s {}..".format(ancestor))
